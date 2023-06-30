@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Biểu đồ tròn tỉ lệ phần trăm</title>
+    <style>
+      canvas {
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Biểu đồ tròn tỉ lệ phần trăm</h2>
+    <div>
+      <label for="input1">Số 1:</label>
+      <input type="number" id="input1" min="0" />
+      <br />
+      <label for="input2">Số 2:</label>
+      <input type="number" id="input2" min="0" />
+      <br />
+      <label for="input3">Số 3:</label>
+      <input type="number" id="input3" min="0" />
+      <br />
+      <label for="color1">Màu phần 1:</label>
+      <input type="color" id="color1" />
+      <br />
+      <label for="color2">Màu phần 2:</label>
+      <input type="color" id="color2" />
+      <br />
+      <label for="color3">Màu phần 3:</label>
+      <input type="color" id="color3" />
+    </div>
+    <canvas id="chartCanvas" width="400" height="400"></canvas>
+
+    <!-- <script src="script.js"></script> -->
+  </body>
+  <script>
+    // Lấy các phần tử HTML
+    const input1 = document.getElementById("input1");
+    const input2 = document.getElementById("input2");
+    const input3 = document.getElementById("input3");
+    const colorInput1 = document.getElementById("color1");
+    const colorInput2 = document.getElementById("color2");
+    const colorInput3 = document.getElementById("color3");
+    const canvas = document.getElementById("chartCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Vẽ biểu đồ tròn
+    function drawChart() {
+      // Lấy giá trị từ input
+      const value1 = parseFloat(input1.value) || 0;
+      const value2 = parseFloat(input2.value) || 0;
+      const value3 = parseFloat(input3.value) || 0;
+
+      // Tính tổng giá trị
+      const total = value1 + value2 + value3;
+
+      // Tính phần trăm
+      const percent1 = (value1 / total) * 100;
+      const percent2 = (value2 / total) * 100;
+      const percent3 = (value3 / total) * 100;
+
+      // Xoá nội dung hiện tại trên canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Vẽ các phần tròn tỉ lệ phần trăm
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = Math.min(centerX, centerY) - 10;
+
+      const startAngle = 0;
+      const endAngle1 = (percent1 / 100) * 2 * Math.PI;
+      // Vẽ các phần tròn tỉ lệ phần trăm (tiếp tục)
+      const endAngle2 = ((percent1 + percent2) / 100) * 2 * Math.PI;
+      const endAngle3 = 2 * Math.PI;
+
+      // Vẽ phần tròn tỉ lệ phần trăm
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.arc(centerX, centerY, radius, startAngle, endAngle1);
+      ctx.fillStyle = colorInput1.value;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.arc(centerX, centerY, radius, endAngle1, endAngle2);
+      ctx.fillStyle = colorInput2.value;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.arc(centerX, centerY, radius, endAngle2, endAngle3);
+      ctx.fillStyle = colorInput3.value;
+      ctx.fill();
+
+      // Hiển thị phần trăm
+      ctx.fillStyle = "#000";
+      ctx.font = "16px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(`${percent1.toFixed(2)}%`, centerX, centerY - radius / 2);
+      ctx.fillText(
+        `${percent2.toFixed(2)}%`,
+        centerX + radius / 2,
+        centerY + radius / 2
+      );
+      ctx.fillText(
+        `${percent3.toFixed(2)}%`,
+        centerX - radius / 2,
+        centerY + radius / 2
+      );
+    }
+
+    // Gọi hàm drawChart để vẽ biểu đồ ban đầu
+    drawChart();
+
+    // Lắng nghe sự kiện thay đổi giá trị và vẽ lại biểu đồ
+    input1.addEventListener("input", drawChart);
+    input2.addEventListener("input", drawChart);
+    input3.addEventListener("input", drawChart);
+    colorInput1.addEventListener("input", drawChart);
+    colorInput2.addEventListener("input", drawChart);
+    colorInput3.addEventListener("input", drawChart);
+  </script>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    #paper {
+      background-color: antiquewhite;
+    }
+  </style>
+  <body>
+    <div>
+      <input type="text" id="width-rect" placeholder="Chiều dài" />
+      <input type="text" id="height-rect" placeholder="Chiều rộng" />
+      <input type="color" id="color-rect" />
+      <button onclick="drawRect()">Draw</button>
+    </div>
+
+    <div>
+      <input type="text" id="radius" placeholder="Nhập bán kính" />
+      <button onclick="drawCircle()">Draw</button>
+    </div>
+    <div>
+      <button onclick="clearScreen()">Xoá hết</button>
+    </div>
+
+    <canvas id="paper" width="800" height="600"></canvas>
+    <!-- <img src="language.jpg" alt="" /> -->
+    <script>
+      let paper = document.getElementById("paper"); //canvas
+      let pen = paper.getContext("2d"); //ctx
+
+      let img = new Image();
+      img.src = "assets/ball2.png";
+
+      function drawRect() {
+        let w = +document.getElementById("width-rect").value;
+        let h = +document.getElementById("height-rect").value;
+        let color = document.getElementById("color-rect").value;
+
+        pen.beginPath(); //x,y,width,height
+        pen.rect(100, 100, w, h);
+        // pen.strokeStyle = "red";
+        pen.lineWidth = 5;
+        pen.fillStyle = color;
+        //   pen.stroke();
+        pen.fill();
+        pen.closePath();
+      }
+
+      function drawCircle(x, y) {
+        // let radius = +document.getElementById("radius").value;
+        pen.beginPath();
+        pen.arc(x, y, 50, 0, 2 * Math.PI);
+        pen.fillStyle = "red";
+        pen.fill();
+        pen.stroke();
+        pen.closePath();
+      }
+
+      function drawImg(x, y) {
+        pen.beginPath();
+        pen.drawImage(img, x, y, 100, 100);
+        pen.closePath();
+      }
+      let x = 100;
+      let y = 100;
+      let speedX = 10;
+      let speedY = 10;
+      // setInterval(function () {
+      //   if (x > paper.width - 50 || x < 50) {
+      //     speedX = -speedX;
+      //   }
+      //   x += speedX;
+
+      //   if (y > paper.height - 50 || y < 50) {
+      //     speedY = -speedY;
+      //   }
+      //   y += speedY;
+      //   clearScreen();
+      //   drawCircle(x, y);
+      // }, 10);
+
+      function main() {
+        if (x > paper.width - 50 || x < 50) {
+          speedX = -speedX;
+        }
+        x += speedX;
+
+        if (y > paper.height - 50 || y < 50) {
+          speedY = -speedY;
+        }
+        y += speedY;
+        clearScreen();
+        drawImg(x, y);
+        requestAnimationFrame(main);
+      }
+
+      main();
+
+      function clearScreen() {
+        pen.clearRect(0, 0, paper.width, paper.height);
+      }
+    </script>
+  </body>
+</html>
